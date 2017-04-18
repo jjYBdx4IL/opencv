@@ -20,7 +20,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <!--    <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
@@ -35,16 +35,62 @@
                         </goals>
                         <configuration>
                             <url>https://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.2.0/opencv-3.2.0-vc14.exe/download</url>
-                            <unpack>true</unpack>
+                            <unpack>false</unpack>
                             <outputDirectory>${project.build.directory}/winlibs</outputDirectory>
                             <md5>7631e708a9ae036569e400ba43886861</md5>
+                            <outputFileName>opencv.exe</outputFileName>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <toolchains>
+                        <paths>
+                            <id>foo-bar</id>
+                        </paths>
+                    </toolchains>
+                </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <!-- Enable "paths" Toolchain provided by Exec Maven Plugin -->
+                <!--<extensions>true</extensions>-->
+                <executions>
+                    <execution>
+                        <id>unpack-7z</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<toolchain>paths</toolchain>-->
+                    <executable>C:\cygwin64\lib\p7zip\7z.exe</executable>
+                    <workingDirectory>${project.build.directory}\winlibs</workingDirectory>
+                    <arguments>
+                        <argument>x</argument>
+                        <argument>-bb1</argument>
+                        <argument>opencv.exe</argument>
+                        <argument>opencv/build/java</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
         </plugins>
-    </build>-->
-    <repositories>
+    </build>
+<!--    <repositories>
         <repository>
             <snapshots>
                 <enabled>false</enabled>
@@ -62,5 +108,5 @@
             <version>3.1.0-160510</version>
             <type>pom</type>
         </dependency>
-    </dependencies>
+    </dependencies>-->
 </project>
